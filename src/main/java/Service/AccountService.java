@@ -46,7 +46,6 @@ public class AccountService {
     // @param Account
     // @return Account
     public Account login(Account account){
-        System.out.println("Why no login?");
         if (this.AccountExists(account)){
             if (accountDAO.getAccountbyAccount(account) == null){
             }

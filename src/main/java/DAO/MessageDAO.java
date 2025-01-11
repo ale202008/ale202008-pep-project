@@ -40,7 +40,7 @@ public class MessageDAO {
 
         try {
             // Initialize SQL statement
-            String sql = "INSERT INTO Message (posted_by, message_text, time_post_epoch) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO Message (posted_by, message_text, time_posted_epoch) VALUES (?, ?, ?)";
             // Initialize PreparedStatement object
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             // Set prepared statement object parameters

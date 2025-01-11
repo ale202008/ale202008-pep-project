@@ -27,12 +27,14 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
 
         /* GET METHODS */
-        app.post("/login", this::loginHandler);
+
 
         /* POST METHODS  */ 
 
         // Endpoint for user registration
         app.post("/register", this::registerHandler);
+        app.post("/login", this::loginHandler);
+        app.post("/messages", this::messageHandler);
 
         return app;
     }
@@ -62,7 +64,6 @@ public class SocialMediaController {
         ObjectMapper om = new ObjectMapper();
 
         try {
-            System.out.println("TESTTESTTEST");
             String jsonString = ctx.body();
             Account account = om.readValue(jsonString, Account.class);
             Account res = accountService.login(account);
@@ -74,6 +75,27 @@ public class SocialMediaController {
             }
         }
         catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void messageHandler(Context ctx){
+        MessageService messageService = new MessageService();
+        ObjectMapper om = new ObjectMapper();
+
+        
+        try {
+            String jsonString = ctx.body();
+            Message message = om.readValue(jsonString, Message.class);
+            Message res = messageService.createMessage(message);
+            if (res != null){
+                ctx.json(res).status(200);
+            }
+            else{
+                ctx.status(400);
+            }
+        }
+        catch(Exception e){
             System.out.println(e.getMessage());
         }
     }
