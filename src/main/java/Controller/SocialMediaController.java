@@ -43,9 +43,12 @@ public class SocialMediaController {
         app.post("/messages", this::messageHandler);
 
         /* DELETE METHODS */
-        
+
         // Endpoint to delete message via id
         app.delete("/messages/{message_id}", this::deleteMessageById);
+
+        /* PATCH METHODS */
+        app.patch("/messages/{message_id}", this::updateMessageById);
 
         return app;
     }
@@ -141,5 +144,10 @@ public class SocialMediaController {
         else{
             ctx.status(200);
         }
+    }
+
+    private void updateMessageById(Context ctx){
+        MessageService messageService = new MessageService();
+        int messageId = Integer.parseInt(ctx.pathParam("message_id"));
     }
 }
