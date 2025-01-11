@@ -105,28 +105,38 @@ public class MessageDAO {
     // Delete message via message_id
     public Message deleteMessageById(int message_id){
         Connection connection = ConnectionUtil.getConnection();
-
+        System.out.println("WE GOT TO DAO DELETION");
         try {
             // Initialize SQL statement
-            String sql = "DELETE FROM Message WHERE message_id = ?";
+            String sql = "SELECT * FROM Message WHERE message_id = ?";
             // Initialize prepared statement
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = connection.prepareStatement(sql);
             // Implement prepared statement parameters
             ps.setInt(1, message_id);
-            // Initiate deletion
-            ps.executeUpdate();
-            // Should contain the deleted message
-            ResultSet pkeyResultSet = ps.getGeneratedKeys();
+            // Initiate query
+            ResultSet rs = ps.executeQuery();
+            // Initialize return message object
+            Message message = null;
             // If there is a message in ResultSet, then return that message
-            if (pkeyResultSet.next()){
-                Message message = new Message(
-                    pkeyResultSet.getInt("message_id"),
-                    pkeyResultSet.getInt("posted_by"),
-                    pkeyResultSet.getString("message_text"),
-                    pkeyResultSet.getLong("time_posted_epoch")
+            if (rs.next()){
+                message = new Message(
+                    rs.getInt("message_id"),
+                    rs.getInt("posted_by"),
+                    rs.getString("message_text"),
+                    rs.getLong("time_posted_epoch")
                 );
-                return message;
             }
+            // Rewrite for deletion sql string
+            sql = "DELETE FROM Message WHERE message_id = ?";
+            // Prepare new PreparedStatement with deletion sql string
+            ps = connection.prepareStatement(sql);
+            // Set paramater for prepared statement
+            ps.setInt(1, message_id);
+            // Execute update
+            ps.executeUpdate();
+            
+            // return message, null if message did not exist
+            return message;
 
         }
         catch(SQLException e){
