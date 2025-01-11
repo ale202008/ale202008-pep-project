@@ -62,4 +62,9 @@ public class MessageService {
         System.out.print("WE GOT HERE");
         return messageDAO.updateMessageById(message_id, message_text);
     }
+
+    // Get all messages via account_id
+    public List<Message> getAllMessagesByAccountId(int account_id){
+        return messageDAO.getAllMessagesByAccountId(account_id);
+    }
 }
