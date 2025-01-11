@@ -33,5 +33,40 @@ public class MessageDAO {
         }
         return messages;
     }
+
+    // Insert new Message
+    public Message insertMessage(Message message){
+        Connection connection = ConnectionUtil.getConnection();
+
+        try {
+            // Initialize SQL statement
+            String sql = "INSERT INTO Message (posted_by, message_text, time_post_epoch) VALUES (?, ?, ?)";
+            // Initialize PreparedStatement object
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            // Set prepared statement object parameters
+            ps.setInt(1, message.getPosted_by());
+            ps.setString(2, message.getMessage_text());
+            ps.setLong(3, message.getTime_posted_epoch());
+            // Execute Insert
+            ps.executeUpdate();
+            // Grab updated ResultSet
+            ResultSet pkeyResultSet = ps.getGeneratedKeys();
+            // If true, meaning that new message was created, create message object to return
+            if(pkeyResultSet.next()){
+                int generated_message_id = (int) pkeyResultSet.getLong(1);
+                return new Message(
+                    generated_message_id,
+                    message.getPosted_by(), 
+                    message.getMessage_text(), 
+                    message.getTime_posted_epoch()
+                );
+            }
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
     
 }

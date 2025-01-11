@@ -54,7 +54,7 @@ public class AccountDAO {
         return null;
     }
 
-    // Register Account
+    // Insert a new Account
     public Account insertAccount(Account account){
         Connection connection = ConnectionUtil.getConnection();
         try {
