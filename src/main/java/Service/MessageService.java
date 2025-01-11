@@ -21,14 +21,14 @@ public class MessageService {
     }
 
     // Boolean method checking if message is blank
-    private Boolean isBlank(Message message){
-        return (message.getMessage_text() == "");
+    private Boolean isBlank(String message_text){
+        return (message_text == "");
     }
 
     // Create new message
     public Message createMessage(Message message){
         // Check if message is blank
-        if (isBlank(message)){
+        if (isBlank(message.getMessage_text())){
             return null;
         }
 
@@ -44,5 +44,21 @@ public class MessageService {
     // Delete message via message_id
     public Message deleteMessageById(int message_id){
         return messageDAO.deleteMessageById(message_id);
+    }
+
+    // Boolean method to check if message_text is over 255
+    private Boolean over255(String message_text){
+        if (message_text.length() > 255){
+            return true;
+        }
+        return false;
+    }
+
+    // Update message via message_id
+    public Message updateMessageById(int message_id, String message_text){
+        if (isBlank(message_text) || over255(message_text)){
+            return null;
+        }
+        return messageDAO.updateMessageById(message_id, message_text);
     }
 }
