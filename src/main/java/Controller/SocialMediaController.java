@@ -32,6 +32,8 @@ public class SocialMediaController {
         app.get("/messages", this::getAllMessagesHandler);
         // Endpoint to retrieve a message via id
         app.get("/messages/{message_id}", this::getMessageById);
+        // Endpoint to retrieve all messages via user
+        app.get("/accounts/{account_id}", this::getAllMessagesByAccountId);
 
         /* POST METHODS  */ 
 
@@ -189,6 +191,19 @@ public class SocialMediaController {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    // Handler for getting all messages via account id
+    private void getAllMessagesByAccountId(Context ctx){
+        MessageService messageService = new MessageService();
+
+        try {
+            int account_id = Integer.parseInt(ctx.pathParam("account_id"));
+            
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
     
 }
