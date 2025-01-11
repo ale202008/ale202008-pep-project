@@ -41,6 +41,8 @@ public class SocialMediaController {
         app.post("/login", this::loginHandler);
         // Endpoint to create message
         app.post("/messages", this::messageHandler);
+        // Endpoint to delete message via id
+        app.post("/messages/{message_id}", this::deleteMessageById);
 
         return app;
     }
@@ -123,5 +125,11 @@ public class SocialMediaController {
         if (message != null){
             ctx.json(message).status(200);
         }
+    }
+
+    // Handler to delete message via message_id
+    private void deleteMessageById(Context ctx){
+        MessageService messageService = new MessageService();
+        int messageId = Integer.parseInt(ctx.pathParam("message_id"));
     }
 }
