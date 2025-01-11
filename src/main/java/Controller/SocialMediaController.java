@@ -33,7 +33,7 @@ public class SocialMediaController {
         // Endpoint to retrieve a message via id
         app.get("/messages/{message_id}", this::getMessageById);
         // Endpoint to retrieve all messages via user
-        app.get("/accounts/{account_id}", this::getAllMessagesByAccountId);
+        app.get("/accounts/{account_id}/messages", this::getAllMessagesByAccountId);
 
         /* POST METHODS  */ 
 
@@ -199,7 +199,7 @@ public class SocialMediaController {
 
         try {
             int account_id = Integer.parseInt(ctx.pathParam("account_id"));
-            
+            ctx.json(messageService.getAllMessagesByAccountId(account_id)).status(200);
         }
         catch(Exception e){
             System.out.println(e.getMessage());
