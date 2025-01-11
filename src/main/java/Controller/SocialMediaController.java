@@ -2,6 +2,11 @@ package Controller;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+// Import Model java files
+import Model.Account;
+import Model.Message;
 
 // Importing Service java files for Account and Message
 import Service.AccountService;
@@ -20,9 +25,26 @@ public class SocialMediaController {
      */
     public Javalin startAPI() {
         Javalin app = Javalin.create();
+        ObjectMapper om = new ObjectMapper();
 
         // Endpoint for user registration
-        app.get("/register", ctx -> {
+        app.post("/register", ctx -> {
+            AccountService accountService = new AccountService();
+
+            try {
+                String jsonString = ctx.body();
+                Account account = om.readValue(jsonString, Account.class);
+                Account result = accountService.register(account);
+                if (result != null){
+                    ctx.json(result).status(200);
+                }
+                else {
+                    ctx.status(400);
+                }
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
 
         });
 
