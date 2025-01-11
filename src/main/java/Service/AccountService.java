@@ -32,7 +32,7 @@ public class AccountService {
     }
 
     // Use AccountDAO to register a new user
-    // @param username, password
+    // @param Account
     // @return Account, null if account exists already
     public Account register(Account account){
         if (isAccountValid(account) || AccountExists(account)){
@@ -42,4 +42,16 @@ public class AccountService {
         return accountDAO.insertAccount(account);
     }
 
+    // Use AccountDAO to validate if a user exists
+    // @param Account
+    // @return Account
+    public Account login(Account account){
+        System.out.println("Why no login?");
+        if (this.AccountExists(account)){
+            if (accountDAO.getAccountbyAccount(account) == null){
+            }
+            return accountDAO.getAccountbyAccount(account);
+        }
+        return null;
+    }
 }
