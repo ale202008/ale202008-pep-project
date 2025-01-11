@@ -21,19 +21,25 @@ public class AccountService {
         return accountDAO.getAllAccounts();
     }
 
+    // Boolean method to check if account exists already
+    private boolean AccountExists(Account account){
+        return this.getAllAccounts().contains(account);
+    }
+
+    // Boolean method to check if account information is valid
+    private boolean isAccountValid(Account account){
+        return account.getPassword().length() <= 4 || account.getUsername() == "";
+    }
+
     // Use AccountDAO to register a new user
     // @param username, password
     // @return Account, null if account exists already
     public Account register(Account account){
-        if (account.getPassword().length() <= 4 || account.getUsername() == "" || this.getAllAccounts().contains(account)){
+        if (isAccountValid(account) || AccountExists(account)){
             return null;
         }
 
-        Account registeredAccount = accountDAO.addAccount(account);
-        if (registeredAccount != null){
-            return registeredAccount;
-        }
-
-        return null;
+        return accountDAO.insertAccount(account);
     }
+
 }

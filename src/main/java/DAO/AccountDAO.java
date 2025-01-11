@@ -33,7 +33,7 @@ public class AccountDAO {
     }
 
     // Register Account
-    public Account addAccount(Account account){
+    public Account insertAccount(Account account){
         Connection connection = ConnectionUtil.getConnection();
         try {
             // SQL statemt to insert new Account record
