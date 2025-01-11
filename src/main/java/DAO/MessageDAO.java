@@ -101,4 +101,38 @@ public class MessageDAO {
 
         return null;
     }
+
+    // Delete message via message_id
+    public Message deleteMessageById(int message_id){
+        Connection connection = ConnectionUtil.getConnection();
+
+        try {
+            // Initialize SQL statement
+            String sql = "DELETE FROM Message WHERE message_id = ?";
+            // Initialize prepared statement
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            // Implement prepared statement parameters
+            ps.setInt(1, message_id);
+            // Initiate deletion
+            ps.executeUpdate();
+            // Should contain the deleted message
+            ResultSet pkeyResultSet = ps.getGeneratedKeys();
+            // If there is a message in ResultSet, then return that message
+            if (pkeyResultSet.next()){
+                Message message = new Message(
+                    pkeyResultSet.getInt("message_id"),
+                    pkeyResultSet.getInt("posted_by"),
+                    pkeyResultSet.getString("message_text"),
+                    pkeyResultSet.getLong("time_posted_epoch")
+                );
+                return message;
+            }
+
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
 }
