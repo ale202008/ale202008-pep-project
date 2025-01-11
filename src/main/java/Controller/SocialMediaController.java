@@ -27,7 +27,7 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
 
         /* GET METHODS */
-
+        app.get("/messages", this::getAllMessagesHandler);
 
         /* POST METHODS  */ 
 
@@ -98,5 +98,10 @@ public class SocialMediaController {
         catch(Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    private void getAllMessagesHandler(Context ctx){
+        MessageService messageService = new MessageService();
+        ctx.json(messageService.getAllMessages());
     }
 }
