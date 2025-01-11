@@ -48,6 +48,8 @@ public class SocialMediaController {
         app.delete("/messages/{message_id}", this::deleteMessageById);
 
         /* PATCH METHODS */
+
+        // Endpoint to update message
         app.patch("/messages/{message_id}", this::updateMessageById);
 
         return app;
@@ -120,34 +122,73 @@ public class SocialMediaController {
     // Handler for get all messages
     private void getAllMessagesHandler(Context ctx){
         MessageService messageService = new MessageService();
-        ctx.json(messageService.getAllMessages());
+        try{
+            ctx.json(messageService.getAllMessages());
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     // Handler for get message by message_id
     private void getMessageById(Context ctx){
         MessageService messageService = new MessageService();
-        int messageId = Integer.parseInt(ctx.pathParam("message_id"));
-        Message message = messageService.getMessageById(messageId);
-        if (message != null){
-            ctx.json(message).status(200);
+
+        try{
+            int messageId = Integer.parseInt(ctx.pathParam("message_id"));
+            Message message = messageService.getMessageById(messageId);
+            if (message != null){
+                ctx.json(message).status(200);
+            }
         }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
     }
 
     // Handler to delete message via message_id
     private void deleteMessageById(Context ctx){
         MessageService messageService = new MessageService();
-        int messageId = Integer.parseInt(ctx.pathParam("message_id"));
-        Message message = messageService.deleteMessageById(messageId);
-        if (message != null){
-            ctx.json(message).status(200);
+        
+        try{
+            int messageId = Integer.parseInt(ctx.pathParam("message_id"));
+            Message message = messageService.deleteMessageById(messageId);
+            if (message != null){
+                ctx.json(message).status(200);
+            }
+            else{
+                ctx.status(200);
+            }
         }
-        else{
-            ctx.status(200);
+        catch(Exception e){
+            System.out.println(e.getMessage());
         }
+
     }
 
+    // Handler for update message via message_id
     private void updateMessageById(Context ctx){
         MessageService messageService = new MessageService();
-        int messageId = Integer.parseInt(ctx.pathParam("message_id"));
+        ObjectMapper om = new ObjectMapper();
+        
+        try{
+            int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+            String jsonString = ctx.body();
+            Message message = om.readValue(jsonString, Message.class);
+            String updated_text = message.getMessage_text();
+            message = messageService.updateMessageById(message_id, updated_text);
+            if (message != null){
+                ctx.json(message).status(200);
+            }
+            else{
+                ctx.status(400);
+            }
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
     }
+    
 }

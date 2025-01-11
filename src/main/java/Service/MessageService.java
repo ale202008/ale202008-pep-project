@@ -59,6 +59,7 @@ public class MessageService {
         if (isBlank(message_text) || over255(message_text)){
             return null;
         }
+        System.out.print("WE GOT HERE");
         return messageDAO.updateMessageById(message_id, message_text);
     }
 }

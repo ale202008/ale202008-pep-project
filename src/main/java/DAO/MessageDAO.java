@@ -152,7 +152,7 @@ public class MessageDAO {
 
         try{
             // Initialize SQL statement
-            String sql = "UPDATE FROM Message SET message_text = ? WHERE message_id = ?";
+            String sql = "UPDATE Message SET message_text = ? WHERE message_id = ?";
             // Initialize prepared statement
             PreparedStatement ps = connection.prepareStatement(sql);
             // Implement prepared statement parameters
