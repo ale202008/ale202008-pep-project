@@ -35,4 +35,9 @@ public class MessageService {
         // Otherwise return message if successful, null if fail
         return messageDAO.insertMessage(message);
     }
+
+    // Get message by message_id
+    public Message getMessageById(int message_id){
+        return messageDAO.getMessageById(message_id);
+    }
 }

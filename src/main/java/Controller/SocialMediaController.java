@@ -119,6 +119,5 @@ public class SocialMediaController {
     private void getMessageById(Context ctx){
         MessageService messageService = new MessageService();
         int messageId = Integer.parseInt(ctx.pathParam("message_id"));
-
     }
 }
