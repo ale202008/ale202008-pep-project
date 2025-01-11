@@ -27,18 +27,25 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
 
         /* GET METHODS */
+
+        // Endpoint to get all messages
         app.get("/messages", this::getAllMessagesHandler);
+        // Endpoint to retrieve a message via id
+        app.get("/messages/{message_id}", this::getMessageById);
 
         /* POST METHODS  */ 
 
         // Endpoint for user registration
         app.post("/register", this::registerHandler);
+        // Endpoint for login
         app.post("/login", this::loginHandler);
+        // Endpoint to create message
         app.post("/messages", this::messageHandler);
 
         return app;
     }
 
+    // Handler for register endpoint
     private void registerHandler(Context ctx) {
         AccountService accountService = new AccountService();
         ObjectMapper om = new ObjectMapper();
@@ -59,6 +66,7 @@ public class SocialMediaController {
         }
     }
 
+    // Handler for login
     private void loginHandler(Context ctx){
         AccountService accountService = new AccountService();
         ObjectMapper om = new ObjectMapper();
@@ -79,6 +87,7 @@ public class SocialMediaController {
         }
     }
 
+    // Handler for message creation
     private void messageHandler(Context ctx){
         MessageService messageService = new MessageService();
         ObjectMapper om = new ObjectMapper();
@@ -100,8 +109,16 @@ public class SocialMediaController {
         }
     }
 
+    // Handler for get all messages
     private void getAllMessagesHandler(Context ctx){
         MessageService messageService = new MessageService();
         ctx.json(messageService.getAllMessages());
+    }
+
+    // Handler for get message by message_id
+    private void getMessageById(Context ctx){
+        MessageService messageService = new MessageService();
+        int messageId = Integer.parseInt(ctx.pathParam("message_id"));
+
     }
 }
